@@ -75,3 +75,71 @@ function buildName(firstName: string, ...restOfName: string[]) {
 
 // employeeName will be "Joseph Samuel Lucas MacKinzie"
 let employeeName = buildName('Joseph', 'Samuel', 'Lucas', 'MacKinzie');
+// this
+//In JavaScript, this is a variable that’s set when a function is called
+let deck = {
+  suits: ['hearts', 'spades', 'clubs', 'diamonds'],
+  cards: Array(52),
+  createCardPicker: function () {
+    return function () {
+      let pickedCard = Math.floor(Math.random() * 52);
+      let pickedSuit = Math.floor(pickedCard / 13);
+
+      return { suit: this.suits[pickedSuit], card: pickedCard % 13 };
+    };
+  },
+};
+
+let cardPicker = deck.createCardPicker();
+let pickedCard = cardPicker();
+
+alert('card: ' + pickedCard.card + ' of ' + pickedCard.suit); //If we tried to run the example, we would get an error instead of the expected alert box
+//Arrow functions capture the this where the function is created rather than where it is invoked:
+
+let deck = {
+  suits: ['hearts', 'spades', 'clubs', 'diamonds'],
+  cards: Array(52),
+  createCardPicker: function () {
+    // NOTE: the line below is now an arrow function, allowing us to capture 'this' right here
+    return () => {
+      let pickedCard = Math.floor(Math.random() * 52);
+      let pickedSuit = Math.floor(pickedCard / 13);
+
+      return { suit: this.suits[pickedSuit], card: pickedCard % 13 };
+    };
+  },
+};
+
+let cardPicker = deck.createCardPicker();
+let pickedCard = cardPicker();
+
+alert('card: ' + pickedCard.card + ' of ' + pickedCard.suit);
+
+// this parameter
+interface Card {
+    suit: string;
+    card: number;
+}
+interface Deck {
+    suits: string[];
+    cards: number[];
+    createCardPicker(this: Deck): () => Card;
+}
+let deck: Deck = {
+    suits: ["hearts", "spades", "clubs", "diamonds"],
+    cards: Array(52),
+    // NOTE: The function now explicitly specifies that its callee must be of type Deck
+    createCardPicker: function(this: Deck) {
+        return () => {
+            let pickedCard = Math.floor(Math.random() * 52);
+            let pickedSuit = Math.floor(pickedCard / 13);
+
+            return {suit: this.suits[pickedSuit], card: pickedCard % 13};
+        }
+    }
+}
+
+let cardPicker2 = deck.createCardPicker();
+let pickedCard2 = cardPicker();
+
+alert('card: ' + pickedCard.card + ' of ' + pickedCard.suit);
