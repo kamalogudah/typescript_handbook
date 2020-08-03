@@ -182,7 +182,7 @@ if (employee.fullName) {
   console.log(employee.fullName);
 }
 
-// Static Properties
+// Static Properties. We can also create static members of a class, those that are visible on the class itself rather than on the instances
 class Grid {
   static origin = { x: 0, y: 0 };
   calculateDistanceFromOrigin(point: { x: number; y: number }) {
@@ -198,3 +198,47 @@ let grid2 = new Grid(5.0); // 5x scale
 
 console.log(grid1.calculateDistanceFromOrigin({ x: 10, y: 10 }));
 console.log(grid2.calculateDistanceFromOrigin({ x: 10, y: 10 }));
+
+// Abstract Classes # Abstract classes are base classes from which other classes may be derived.
+abstract class Animal {
+  abstract makeSound(): void;
+  move(): void {
+    console.log('roaming the earth...');
+  }
+}
+
+// Methods within an abstract class that are marked as abstract do not contain an implementation and must be implemented in derived classes.
+abstract class Department {
+
+    constructor(public name: string) {
+    }
+
+    printName(): void {
+        console.log("Department name: " + this.name);
+    }
+
+    abstract printMeeting(): void; // must be implemented in derived classes
+}
+
+class AccountingDepartment extends Department {
+
+    constructor() {
+        super("Accounting and Auditing"); // constructors in derived classes must call super()
+    }
+
+    printMeeting(): void {
+        console.log("The Accounting Department meets each Monday at 10am.");
+    }
+
+    generateReports(): void {
+        console.log("Generating accounting reports...");
+    }
+}
+
+let department: Department; // ok to create a reference to an abstract type
+department = new Department(); // error: cannot create an instance of an abstract class
+department = new AccountingDepartment(); // ok to create and assign a non-abstract subclass
+department.printName();
+department.printMeeting();
+department.generateReports(); // error: method doesn't exist on declared abstract type
+Advanced Techniques #
