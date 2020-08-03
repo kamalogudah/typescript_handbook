@@ -136,3 +136,21 @@ class Employee extends Person {
 
 let howard = new Employee("Howard", "Sales");
 let john = new Person("John"); // Error: The 'Person' constructor is protected
+
+// Read Only
+class Octopus {
+    readonly name: string;
+    readonly numberOfLegs: number = 8;
+    constructor (theName: string) {
+        this.name = theName;
+    }
+}
+let dad = new Octopus("Man with the 8 strong legs");
+dad.name = "Man with the 3-piece suit"; // error! name is readonly.
+
+//Parameter properties
+
+class Octopus {
+  readonly numberOfLegs: number = 8;
+  constructor(readonly name: string) {}
+}
